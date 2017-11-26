@@ -1,0 +1,25 @@
+name: Neatseq_Flow
+channels:
+  - bioconda
+dependencies:
+# Deps of Neatseq_Flow
+  - python=2.7   # or 2.7
+  - pyyaml
+  - pandas
+  - bunch
+# R
+  - r-base
+  - r-htmlwidgets
+  - r-diagrammer
+# Software
+  - fastqc 
+  - Trimmomatic=0.35
+  - multiqc 
+  - samtools=1.3
+  - BWA
+  - bowtie2
+  #Neatseq_Flow
+  - pip:
+    - git+https://github.com/bioinfo-core-BGU/neatseq-flow.git
+    - git+https://github.com/bioinfo-core-BGU/neatseq-flow-modules.git
+    - git+https://github.com/bioinfo-core-BGU/parse_blast.git
