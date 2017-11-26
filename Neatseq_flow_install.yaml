@@ -1,4 +1,4 @@
-name: Neatseq_Flow
+name: Neatseq_Flow_Tutorial
 channels:
   - bioconda
 dependencies:
@@ -6,7 +6,6 @@ dependencies:
   - python=2.7   # or 2.7
   - pyyaml
   - pandas
-  - bunch
 # R
   - r-base
   - r-htmlwidgets
