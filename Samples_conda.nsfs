@@ -2,12 +2,12 @@ Title       Example_WF_From_the_manuscript
 
 
 #SampleID	Type	Path
-Sample1	Forward	$CONDA_PREFIX/Workflows/Sample_sets/Sample1.F.fastq
-Sample1	Reverse	$CONDA_PREFIX/Workflows/Sample_sets/Sample1.R.fastq
-Sample1	Nucleotide	$CONDA_PREFIX/Workflows/Sample_sets/Sample1.fasta
-Sample2	Forward	$CONDA_PREFIX/Workflows/Sample_sets/Sample2.F.fastq
-Sample2	Reverse	$CONDA_PREFIX/Workflows/Sample_sets/Sample2.R.fastq
-Sample2	Nucleotide	$CONDA_PREFIX/Workflows/Sample_sets/Sample2.fasta
-Sample3	Forward	$CONDA_PREFIX/Workflows/Sample_sets/Sample3.F.fastq
-Sample3	Reverse	$CONDA_PREFIX/Workflows/Sample_sets/Sample3.R.fastq
-Sample3	Nucleotide	$CONDA_PREFIX/Workflows/Sample_sets/Sample3.fasta
+Sample1	Forward	$CONDA_PREFIX/TUTORIAL/Data/Sample1.F.fastq
+Sample1	Reverse	$CONDA_PREFIX/TUTORIAL/Data/Sample1.R.fastq
+Sample1	Nucleotide	$CONDA_PREFIX/TUTORIAL/Data/Sample1.fasta
+Sample2	Forward	$CONDA_PREFIX/TUTORIAL/Data/Sample2.F.fastq
+Sample2	Reverse	$CONDA_PREFIX/TUTORIAL/Data/Sample2.R.fastq
+Sample2	Nucleotide	$CONDA_PREFIX/TUTORIAL/Data/Sample2.fasta
+Sample3	Forward	$CONDA_PREFIX/TUTORIAL/Data/Sample3.F.fastq
+Sample3	Reverse	$CONDA_PREFIX/TUTORIAL/Data/Sample3.R.fastq
+Sample3	Nucleotide	$CONDA_PREFIX/TUTORIAL/Data/Sample3.fasta
