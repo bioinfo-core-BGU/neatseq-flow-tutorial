@@ -1,4 +1,4 @@
-name: Neatseq_Flow_Tutorial
+name: NeatSeq_Flow_Tutorial
 channels:
   - bioconda
 dependencies:
