@@ -18,12 +18,14 @@ Global_params:
 Vars:
     # For running using conda environments:
     conda:
-        base:       # Can be empty if running from conda environment 
-        env:        # Neatseq_Flow
+        base:  # Can be empty if running from conda environment 
+        env: NeatSeq_Flow_Tutorial
     # If conda environment is not used, give the full path to the following programs:
     Programs:
         FastQC:     fastqc
-        Trimmomatic: trimmomatic
+        Trimmomatic: 
+            Bin:    trimmomatic
+            Adapters: TruSeq3-PE.fa
         BWA:        bwa
         bowtie2:    bowtie2
         bowtie2_builder: bowtie2-build
@@ -55,35 +57,29 @@ Step_params:
 
     Merge:
         module:         merge 
-        script_path:    cat 
+        script_path:    gzip -cd  
 
     Fastqc_Merge:
         module:         fastqc_html
         base:           Merge
         script_path:    {Vars.Programs.FastQC}
-        qsub_params:
-            -pe:        shared 15
         redirects:
-            --threads:  15
+            --threads:  1
 
     Trimmomatic:
         module:         trimmo
         base:           Merge
-        script_path:    {Vars.Programs.Trimmomatic}
-        qsub_params:
-            -pe:        shared 20
-        todo:           ILLUMINACLIP:TruSeq3-SE.fa:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36
+        script_path:    {Vars.Programs.Trimmomatic.Bin}
+        todo:           'ILLUMINACLIP:$CONDA_PREFIX/share/trimmomatic-0.35-3/adapters/{Vars.Programs.Trimmomatic.Adapters}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36'
         redirects:
-            -threads:   20
+            -threads:   1
     
     FastQC_Trimmomatic:
         module:         fastqc_html
         base:           Trimmomatic
         script_path:    {Vars.Programs.FastQC}
-        qsub_params:
-            -pe:        shared 10
         redirects:
-            --threads:  10
+            --threads:  1
 
     BWA_Index_Builder:
         module:         bwa_builder
@@ -97,10 +93,8 @@ Step_params:
         script_path:    {Vars.Programs.BWA}
         scope:          sample
         mod:            mem
-        qsub_params:
-            -pe:        shared 20
         redirects:
-            -t:         20
+            -t:         1
             -B:         5
 
     Bwt2_Index_Builder:
@@ -114,23 +108,19 @@ Step_params:
         base:           Bwt2_Index_Builder
         script_path:    {Vars.Programs.bowtie2}
         scope:          sample
-        qsub_params:
-            -pe:        shared 20
         get_map_log:
         get_stderr:
         redirects:
             --end-to-end:
-            -p:         20
+            -p:         1
             -q:
 
     Samtools_BWA:
         module:         samtools
         base:           BWA
         script_path:    {Vars.Programs.samtools}
-        qsub_params:
-            -pe:        shared 20
         view:           -buh 
-        sort:           -@ 20
+        sort:           -@ 1
         flagstat:
         idxstats:
         index:
@@ -142,10 +132,8 @@ Step_params:
         module:         samtools
         base:           Bwt2
         script_path:    {Vars.Programs.samtools}
-        qsub_params:
-            -pe:        shared 20
         view:           -buh 
-        sort:           -@ 20
+        sort:           -@ 1
         flagstat:
         idxstats:
         index:
