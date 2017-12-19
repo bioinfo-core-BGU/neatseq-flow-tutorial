@@ -110,7 +110,6 @@ Step_params:
     Samtools_BWA:
         module:         samtools
         base:           BWA
-        script_path:    {Vars.Programs.samtools}
         view:           -buh 
         sort:           -@ 1
         flagstat:

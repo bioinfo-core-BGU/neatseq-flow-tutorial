@@ -24,8 +24,8 @@ Vars:
     Programs:
         FastQC:     fastqc
         Trimmomatic: 
-            Bin:    trimmomatic
-            Adapters: TruSeq3-PE.fa
+            Bin: trimmomatic
+            Adapters: $CONDA_PREFIX/share/trimmomatic-0.35-3/adapters/TruSeq2-PE.fa
         BWA:        bwa
         bowtie2:    bowtie2
         bowtie2_builder: bowtie2-build
@@ -70,7 +70,7 @@ Step_params:
         module:         trimmo
         base:           Merge
         script_path:    {Vars.Programs.Trimmomatic.Bin}
-        todo:           'ILLUMINACLIP:$CONDA_PREFIX/share/trimmomatic-0.35-3/adapters/{Vars.Programs.Trimmomatic.Adapters}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36'
+        todo:           'ILLUMINACLIP:{Vars.Programs.Trimmomatic.Adapters}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36'
         redirects:
             -threads:   1
     
