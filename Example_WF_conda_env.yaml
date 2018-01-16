@@ -18,20 +18,21 @@ Global_params:
 Vars:
     # For running using conda environments:
     conda:
-        base:  # Can be empty if running from conda environment 
-        env: NeatSeq_Flow_Tutorial
-    # If conda environment is not used, give the full path to the following programs:
+        base:       # Can be empty if running from conda environment 
+        env:        NeatSeq_Flow_Tutorial
+    # If conda environment is NOT used, give the full path to the following programs:
     Programs:
         FastQC:     fastqc
         Trimmomatic: 
-            Bin: trimmomatic
+            Bin:    trimmomatic
             Adapters: $CONDA_PREFIX/share/trimmomatic-0.35-3/adapters/TruSeq2-PE.fa
         BWA:        bwa
         bowtie2:    bowtie2
         bowtie2_builder: bowtie2-build
         samtools:   samtools
         multiqc:    multiqc
-
+    Genomes:
+        Reference:  $CONDA_PREFIX/TUTORIAL/Data/Reference_genome.fasta
 # Workflow step and parameters definition:
 ## Definitions have the following form: 
 ## Step NAME
@@ -45,6 +46,7 @@ Vars:
 ## USED MODULES IN THIS FILE:
     ## merge: Copies the raw files, decompresses zipped files and concatenates multiple files.
     ## fastqc_html: Runs the quality checking software ‘FastQC’ on all fastq files.
+    ## manage_types: import the reference genome for downstream mapping.
     ## trimmo: Trims the reads by quality using 'Trimmomatic' program.
     ## bwa_builder: Create an index to be used by the BWA mapper.
     ## BWA_mapper: Maps fastq files to genomes using ‘BWA’ program.
@@ -81,17 +83,26 @@ Step_params:
         redirects:
             --threads:  1
 
+    Get_Reference_Genome:
+        module:         manage_types
+        base:           Trimmomatic
+        script_path:
+        scope:          project
+        operation:      add
+        type:           fasta.nucl
+        path:           {Vars.Genomes.Reference}
+
     BWA_Index_Builder:
         module:         bwa_builder
-        base:           Trimmomatic
+        base:           Get_Reference_Genome
         script_path:    '{Vars.Programs.BWA} index'
-        scope:          sample
+        scope:          project
 
     BWA:
         module:         bwa_mapper
         base:           BWA_Index_Builder
         script_path:    {Vars.Programs.BWA}
-        scope:          sample
+        scope:          project
         mod:            mem
         redirects:
             -t:         1
@@ -99,15 +110,15 @@ Step_params:
 
     Bwt2_Index_Builder:
         module:         bowtie2_builder
-        base:           Trimmomatic
+        base:           Get_Reference_Genome
         script_path:    {Vars.Programs.bowtie2_builder}
-        scope:          sample
+        scope:          project
 
     Bwt2:
         module:         bowtie2_mapper
         base:           Bwt2_Index_Builder
         script_path:    {Vars.Programs.bowtie2}
-        scope:          sample
+        scope:          project
         get_map_log:
         get_stderr:
         redirects:

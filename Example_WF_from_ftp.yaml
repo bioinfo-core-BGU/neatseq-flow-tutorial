@@ -22,7 +22,8 @@ Vars:
         bowtie2_builder: /FULL_PATH_TO/bowtie2-build_Executable
         samtools:        /FULL_PATH_TO/samtools_Executable
         multiqc:         /FULL_PATH_TO/multiqc_Executable
-
+    Genomes:
+        Reference:  ../neatseq-flow-tutorial/Sample_sets/Reference_genome.fasta
 # Workflow step and parameters definition:
 ## Definitions have the following form: 
 ## Step NAME
@@ -37,6 +38,7 @@ Vars:
     ## merge: Copies the raw files, decompresses zipped files and concatenates multiple files.
     ## fastqc_html: Runs the quality checking software ‘FastQC’ on all fastq files.
     ## trimmo: Trims the reads by quality using 'Trimmomatic' program.
+    ## manage_types: import the reference genome for downstream mapping.
     ## bwa_builder: Create an index to be used by the BWA mapper.
     ## BWA_mapper: Maps fastq files to genomes using ‘BWA’ program.
     ## bowtie2_builder: Create an index to be used by the bowtie2 mapper.
@@ -74,18 +76,27 @@ Step_params:
         script_path:    {Vars.Programs.FastQC}
         redirects:
             --threads:  1
-
+    
+    Get_Reference_Genome:
+        module:         manage_types
+        base:           Trimmomatic
+        script_path:
+        scope:          project
+        operation:      add
+        type:           fasta.nucl
+        path:           {Vars.Genomes.Reference}
+    
     BWA_Index_Builder:
         module:         bwa_builder
-        base:           Trimmomatic
+        base:           Get_Reference_Genome
         script_path:    '{Vars.Programs.BWA} index'
-        scope:          sample
+        scope:          project
 
     BWA:
         module:         bwa_mapper
         base:           BWA_Index_Builder
         script_path:    {Vars.Programs.BWA}
-        scope:          sample
+        scope:          project
         mod:            mem
         redirects:
             -t:         1
@@ -93,15 +104,15 @@ Step_params:
 
     Bwt2_Index_Builder:
         module:         bowtie2_builder
-        base:           Trimmomatic
+        base:           Get_Reference_Genome
         script_path:    {Vars.Programs.bowtie2_builder}
-        scope:          sample
+        scope:          project
 
     Bwt2:
         module:         bowtie2_mapper
         base:           Bwt2_Index_Builder
         script_path:    {Vars.Programs.bowtie2}
-        scope:          sample
+        scope:          project
         get_map_log:
         get_stderr:
         redirects:
@@ -112,6 +123,7 @@ Step_params:
     Samtools_BWA:
         module:         samtools
         base:           BWA
+        script_path:    {Vars.Programs.samtools}
         view:           -buh 
         sort:           -@ 1
         flagstat:
