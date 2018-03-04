@@ -1,5 +1,7 @@
-Title       Example_WF_From_the_manuscript
+Title	Example_WF_From_the_manuscript
 
+#Type	Path
+Nucleotide	/$CONDA_PREFIX/TUTORIAL/Data/Reference_genome.fasta
 
 #SampleID	Type	Path
 Sample1	Forward	/$CONDA_PREFIX/TUTORIAL/Data/Sample1.F.fastq.gz

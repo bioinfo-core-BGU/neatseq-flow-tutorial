@@ -1,5 +1,7 @@
-Title       Example_WF_From_the_manuscript
+Title	Example_WF_From_the_manuscript
 
+#Type	Path
+Nucleotide	ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/284/535/GCF_000284535.1_ASM28453v1/GCF_000284535.1_ASM28453v1_genomic.fna.gz
 
 #SampleID	Type	Path
 Sample1	Forward	ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR453/SRR453031/SRR453031_1.fastq.gz

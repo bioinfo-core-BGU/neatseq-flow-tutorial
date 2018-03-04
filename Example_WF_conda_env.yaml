@@ -5,10 +5,10 @@
 ## You can limit the scripts to specific nodes in the queue. Make sure all the nodes are accessible to the queue defined in Qsub_q!
 ## Qsub_opts: You can pass additional default qsub parameters as follows. These will be added to all scripts
 Global_params:
-    Qsub_opts:      -cwd
-    Qsub_path:      /PATH_TO_YOUR_QSUB/
-    Qsub_q:         your.q
-    Default_wait:   10 
+    Qsub_opts:          -cwd
+    Qsub_path:          /PATH_TO_YOUR_QSUB/
+    Qsub_q:             NAME_OF_YOUR_QUEUE.q
+    Default_wait:       10
    # For running using conda environments:
     conda:
         path:       {Vars.conda.base}
@@ -18,7 +18,7 @@ Global_params:
 Vars:
     # For running using conda environments:
     conda:
-        base:       # Can be empty if running from conda environment 
+        base:       # Can be empty if running ‘export CONDA_BASE=$(conda info --root)’ from the command-line 
         env:        NeatSeq_Flow_Tutorial
     # If conda environment is NOT used, give the full path to the following programs:
     Programs:
@@ -31,8 +31,7 @@ Vars:
         bowtie2_builder: bowtie2-build
         samtools:   samtools
         multiqc:    multiqc
-    Genomes:
-        Reference:  $CONDA_PREFIX/TUTORIAL/Data/Reference_genome.fasta
+
 # Workflow step and parameters definition:
 ## Definitions have the following form: 
 ## Step NAME
@@ -46,7 +45,6 @@ Vars:
 ## USED MODULES IN THIS FILE:
     ## merge: Copies the raw files, decompresses zipped files and concatenates multiple files.
     ## fastqc_html: Runs the quality checking software ‘FastQC’ on all fastq files.
-    ## manage_types: import the reference genome for downstream mapping.
     ## trimmo: Trims the reads by quality using 'Trimmomatic' program.
     ## bwa_builder: Create an index to be used by the BWA mapper.
     ## BWA_mapper: Maps fastq files to genomes using ‘BWA’ program.
@@ -59,7 +57,7 @@ Step_params:
 
     Merge:
         module:         merge 
-        script_path:    gzip -cd  
+        script_path:    
 
     Fastqc_Merge:
         module:         fastqc_html
@@ -83,18 +81,10 @@ Step_params:
         redirects:
             --threads:  1
 
-    Get_Reference_Genome:
-        module:         manage_types
-        base:           Trimmomatic
-        script_path:
-        scope:          project
-        operation:      add
-        type:           fasta.nucl
-        path:           {Vars.Genomes.Reference}
 
     BWA_Index_Builder:
         module:         bwa_builder
-        base:           Get_Reference_Genome
+        base:           Trimmomatic
         script_path:    '{Vars.Programs.BWA} index'
         scope:          project
 
@@ -110,7 +100,7 @@ Step_params:
 
     Bwt2_Index_Builder:
         module:         bowtie2_builder
-        base:           Get_Reference_Genome
+        base:           Trimmomatic
         script_path:    {Vars.Programs.bowtie2_builder}
         scope:          project
 

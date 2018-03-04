@@ -1,5 +1,7 @@
-Title       Example_WF_From_the_manuscript
+Title	Example_WF_From_the_manuscript
 
+#Type	Path
+Nucleotide	../neatseq-flow-tutorial/Sample_sets/Reference_genome.fasta
 
 #SampleID	Type	Path
 Sample1	Forward	../neatseq-flow-tutorial/Sample_sets/Sample1.F.fastq.gz

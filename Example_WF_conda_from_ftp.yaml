@@ -9,19 +9,28 @@ Global_params:
     Qsub_path:          /PATH_TO_YOUR_QSUB/
     Qsub_q:             NAME_OF_YOUR_QUEUE.q
     Default_wait:       10
+   # For running using conda environments:
+    conda:
+        path:       {Vars.conda.base}
+        env:        {Vars.conda.env}
    
 ## Definition of variables used in parameters below:
 Vars:
+    # For running using conda environments:
+    conda:
+        base:       # Can be empty if running ‘export CONDA_BASE=$(conda info --root)’ from the command-line 
+        env:        NeatSeq_Flow_Tutorial
+    # If conda environment is NOT used, give the full path to the following programs:
     Programs:
-        FastQC:          /FULL_PATH_TO/fastqc_Executable
-        Trimmomatic:    
-            Bin:         /FULL_PATH_TO/trimmomatic_Executable
-            Adaptors:    /FULL_PATH_TO/Adaptors_FILE
-        BWA:             /FULL_PATH_TO/bwa_Executable
-        bowtie2:         /FULL_PATH_TO/bowtie2_Executable
-        bowtie2_builder: /FULL_PATH_TO/bowtie2-build_Executable
-        samtools:        /FULL_PATH_TO/samtools_Executable
-        multiqc:         /FULL_PATH_TO/multiqc_Executable
+        FastQC:     fastqc
+        Trimmomatic: 
+            Bin:    trimmomatic
+            Adapters: $CONDA_PREFIX/share/trimmomatic-0.35-3/adapters/TruSeq2-PE.fa
+        BWA:        bwa
+        bowtie2:    bowtie2
+        bowtie2_builder: bowtie2-build
+        samtools:   samtools
+        multiqc:    multiqc
 
 # Workflow step and parameters definition:
 ## Definitions have the following form: 
@@ -48,8 +57,10 @@ Step_params:
 
     Merge:
         module:         merge 
-        script_path:    
-
+        script_path:    curl 
+        pipe:           gzip  -cd 
+        redirects:
+            --retry:    10
 
     Fastqc_Merge:
         module:         fastqc_html
@@ -61,8 +72,8 @@ Step_params:
     Trimmomatic:
         module:         trimmo
         base:           Merge
-        script_path:    'java -jar {Vars.Programs.Trimmomatic.Bin}'
-        todo:           'ILLUMINACLIP:{Vars.Programs.Trimmomatic.Adaptors}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36'
+        script_path:    {Vars.Programs.Trimmomatic.Bin}
+        todo:           'ILLUMINACLIP:{Vars.Programs.Trimmomatic.Adapters}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:36'
         redirects:
             -threads:   1
     
@@ -72,8 +83,8 @@ Step_params:
         script_path:    {Vars.Programs.FastQC}
         redirects:
             --threads:  1
-    
-    
+
+
     BWA_Index_Builder:
         module:         bwa_builder
         base:           Trimmomatic

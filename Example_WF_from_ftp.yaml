@@ -7,7 +7,7 @@
 Global_params:
     Qsub_opts:          -cwd
     Qsub_path:          /PATH_TO_YOUR_QSUB/
-    Qsub_q:             your.q
+    Qsub_q:             NAME_OF_YOUR_QUEUE.q
     Default_wait:       10
    
 ## Definition of variables used in parameters below:
@@ -22,8 +22,7 @@ Vars:
         bowtie2_builder: /FULL_PATH_TO/bowtie2-build_Executable
         samtools:        /FULL_PATH_TO/samtools_Executable
         multiqc:         /FULL_PATH_TO/multiqc_Executable
-    Genomes:
-        Reference:  ../neatseq-flow-tutorial/Sample_sets/Reference_genome.fasta
+
 # Workflow step and parameters definition:
 ## Definitions have the following form: 
 ## Step NAME
@@ -38,7 +37,6 @@ Vars:
     ## merge: Copies the raw files, decompresses zipped files and concatenates multiple files.
     ## fastqc_html: Runs the quality checking software ‘FastQC’ on all fastq files.
     ## trimmo: Trims the reads by quality using 'Trimmomatic' program.
-    ## manage_types: import the reference genome for downstream mapping.
     ## bwa_builder: Create an index to be used by the BWA mapper.
     ## BWA_mapper: Maps fastq files to genomes using ‘BWA’ program.
     ## bowtie2_builder: Create an index to be used by the bowtie2 mapper.
@@ -51,7 +49,7 @@ Step_params:
     Merge:
         module:         merge 
         script_path:    curl 
-        pipe:           gzip  -cd | head -n 500000
+        pipe:           gzip  -cd 
         redirects:
             --retry:    10
 
@@ -77,18 +75,9 @@ Step_params:
         redirects:
             --threads:  1
     
-    Get_Reference_Genome:
-        module:         manage_types
-        base:           Trimmomatic
-        script_path:
-        scope:          project
-        operation:      add
-        type:           fasta.nucl
-        path:           {Vars.Genomes.Reference}
-    
     BWA_Index_Builder:
         module:         bwa_builder
-        base:           Get_Reference_Genome
+        base:           Trimmomatic
         script_path:    '{Vars.Programs.BWA} index'
         scope:          project
 
@@ -104,7 +93,7 @@ Step_params:
 
     Bwt2_Index_Builder:
         module:         bowtie2_builder
-        base:           Get_Reference_Genome
+        base:           Trimmomatic
         script_path:    {Vars.Programs.bowtie2_builder}
         scope:          project
 
