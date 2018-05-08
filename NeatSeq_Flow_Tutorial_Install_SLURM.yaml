@@ -1,0 +1,24 @@
+name: NSF_Tut_SLURM
+channels:
+  - bioconda
+dependencies:
+# Deps of Neatseq_Flow
+  - python=2.7   # or 2.7
+  - pyyaml
+  - pandas
+# R
+  - r-base=3.4.2
+  - r-htmlwidgets
+  - r-diagrammer=0.9.2
+# Software
+  - fastqc 
+  - Trimmomatic=0.35=3
+  - multiqc 
+  - samtools=1.3
+  - BWA
+  - bowtie2
+  #Neatseq_Flow
+  - pip:
+    - git+https://github.com/bioinfo-core-BGU/neatseq-flow.git@class_script_creator
+    - git+https://github.com/bioinfo-core-BGU/neatseq-flow-tutorial.git@SLURM
+#    - git+https://github.com/bioinfo-core-BGU/neatseq-flow-modules.git
