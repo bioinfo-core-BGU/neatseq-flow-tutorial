@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name                = 'NeatSeq-Flow-tutorial',
-    version             = '1.1.0',
+    version             = '1.6.0',
     author              = 'Liron Levin and Menachem Sklarz',
     author_email        = 'levinl@post.bgu.ac.il',
     maintainer          = 'Menachem Sklarz',
