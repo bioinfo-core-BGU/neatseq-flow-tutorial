@@ -5,7 +5,10 @@
 ## You can limit the scripts to specific nodes in the queue. Make sure all the nodes are accessible to the queue defined in Qsub_q!
 ## Qsub_opts: You can pass additional default qsub parameters as follows. These will be added to all scripts
 Global_params:
-    Executor:          Local
+    Qsub_opts:          -cwd
+    Qsub_path:          /PATH_TO_YOUR_QSUB/
+    Qsub_q:             NAME_OF_YOUR_QUEUE.q
+    Executor:           Local
     Default_wait:       10
    # For running using conda environments:
     conda:
