@@ -47,7 +47,7 @@ Vars:
 Step_params:
 
     Merge:
-        module:         merge 
+        module:         Import 
         script_path:    
 
 
