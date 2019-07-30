@@ -122,8 +122,8 @@ Step_params:
         view:           -buh 
         sort:           -@ 1
         flagstat:
-        idxstats:
         index:
+        idxstats:
         stats:          --remove-dups
         del_sam:
         del_unsorted:
@@ -135,8 +135,8 @@ Step_params:
         view:           -buh 
         sort:           -@ 1
         flagstat:
-        idxstats:
         index:
+        idxstats:
         stats:          --remove-dups
         del_sam:
         del_unsorted:
