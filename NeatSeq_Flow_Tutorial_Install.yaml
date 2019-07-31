@@ -9,6 +9,7 @@ dependencies:
   - samtools=1.3
   - BWA
   - bowtie2
+  - openssl=1.0
   #Neatseq_Flow
   - pip:
     - git+https://github.com/bioinfo-core-BGU/neatseq-flow-tutorial.git
