@@ -1,5 +1,6 @@
 name: NeatSeq_Flow_Tutorial
 channels:
+  - conda-forge
   - bioconda
 dependencies:
 # Software
