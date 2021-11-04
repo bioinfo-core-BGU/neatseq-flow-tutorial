@@ -5,7 +5,7 @@ dependencies:
 # Software
   - fastqc 
   - Trimmomatic=0.35=3
-  - multiqc=1.7
+  - multiqc=0.9
   - samtools=1.3
   - BWA
   - bowtie2
