@@ -3,7 +3,7 @@ channels:
   - bioconda
 dependencies:
 # Software
-  - python>=3.6
+  - python>=3
   - fastqc
   - Trimmomatic
   - multiqc
